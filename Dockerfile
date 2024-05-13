@@ -1,13 +1,14 @@
 FROM python:3.10.9-slim
 
-RUN apt update
-RUN apt-get install -y ffmpeg
-RUN apt install python3-pip -y
-
 RUN mkdir /app
 ADD . /app
 WORKDIR /app
-RUN pip install -r requirements.txt
+
+RUN apt update && \
+    apt install -y ffmpeg python3-pip && \
+    pip install -r requirements.txt && \
+    playwright install-deps && \
+    playwright install
 
 # tricks for pytube : https://github.com/elebumm/RedditVideoMakerBot/issues/142 
 # (NOTE : This is no longer useful since pytube was removed from the dependencies)
